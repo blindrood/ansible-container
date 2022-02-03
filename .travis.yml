@@ -1,0 +1,11 @@
+sudo: required
+language: python
+services:
+- docker
+
+script:
+- docker build -t $DOCKER_USERNAME/$IMAGE:$VERSION .
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker push $DOCKER_USERNAME/$IMAGE:$VERSION
+- docker tag $DOCKER_USERNAME/$IMAGE:$VERSION $DOCKER_USERNAME/$IMAGE:latest
+- docker push $DOCKER_USERNAME/$IMAGE:latest
